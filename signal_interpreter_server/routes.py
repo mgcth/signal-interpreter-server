@@ -11,5 +11,4 @@ def start():
 @signal_interpreter_app.route("/", methods=["POST"])
 def mirror_data():
     data = request.get_json()
-    print(data)
     return data
