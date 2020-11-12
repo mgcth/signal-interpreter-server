@@ -1,6 +1,5 @@
 import json
 import os
-from flask import jsonify
 
 # can be circumvented by giving full path, but use this instead
 path = os.getcwd().split("\\")
@@ -17,7 +16,7 @@ class ParseJSON:
     def get_signal_title(self, id):
         for s in self.data["services"]:
             if s["id"] == id:
-                return jsonify(s["title"])
+                return s["title"]
 
 # instantiate class for json parsing
 parsejson = ParseJSON()

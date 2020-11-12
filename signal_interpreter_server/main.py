@@ -4,8 +4,7 @@ from json_parser import parsejson
 
 def main():
     args = get_args()
-    parsejson.load_file(args.file_path)
-    signal_interpreter_app.run()
+    parsejson.load_file(args["file_path"])
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -14,3 +13,4 @@ def get_args():
 
 if __name__ == "__main__":
     main()
+    signal_interpreter_app.run()

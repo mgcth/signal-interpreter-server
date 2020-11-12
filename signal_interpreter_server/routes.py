@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request, jsonify
 from json_parser import parsejson
 
 signal_interpreter_app = Flask(__name__)
@@ -12,4 +12,4 @@ def start():
 def interpret_signal():
     data = request.get_json()
     title = parsejson.get_signal_title(data["signal"])
-    return title
+    return jsonify(title)
