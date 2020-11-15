@@ -58,7 +58,8 @@ def test_get_signal_title_from_ID():
 
 
 
-@patch.object(JsonParser, 'get_signal_title_from_ID', return_value={"signal": "27"})
+
+@patch.object(JsonParser, 'get_signal_title_from_ID', return_value="dummy")
 def test_interpret_signal(mock_get_signal_title_from_ID):
     '''
     Rename the function mirror_data() in routes.py to interpret_signal() instead.
@@ -73,18 +74,16 @@ def test_interpret_signal(mock_get_signal_title_from_ID):
         payload = {"signal": "11"}
         rv = client.post("/", json=payload)  # simulates a POST-message
         json_data = rv.get_json()
-        assert list(json_data.keys())[0] == 'signal'
-        assert type(json_data.get('signal')) == str
-        mock_get_signal_title_from_ID.assert_called_once()
+        assert json_data == "dummy"
+        mock_get_signal_title_from_ID.assert_called_with("11")
 
 
 
 
-
-@patch.object(sys, "argv", ["main.main", "--file_path", "./signal_database.json"])
+@patch.object(JsonParser, 'get_signal_title_from_ID', return_value="dummy")
 @patch.object(Flask, "run")
 @patch.object(JsonParser, "load_file")
-def test_main(mock_load_file, mock_run):
+def test_main(mock_load_file, mock_run, mock_get_signal_title_from_ID):
     '''
     * Use argparse to make it possible to run main.py with the argument --file_path where you can specify the path to the signal database file
     * Call load_file() during the startup of the server, i.e. when executing main.py
@@ -92,6 +91,16 @@ def test_main(mock_load_file, mock_run):
     :param mock_run:
     :return:
     '''
-    main()
-    mock_load_file.assert_called_with("./signal_database.json")
-    mock_run.assert_called_once()
+    signal_interpreter_app.testing = True
+    my_app_instance = signal_interpreter_app.test_client()
+
+    with my_app_instance as client:
+        with patch.object(sys, "argv", ["main.main", "--file_path", "./signal_database.json"]):
+            main()
+            payload = {"signal": "11"}
+            client.post("/", json=payload)  # simulates a POST-message
+            mock_run.assert_called_once()
+            mock_load_file.assert_called_with("./signal_database.json")
+
+
+
