@@ -1,14 +1,15 @@
 from flask import Flask
-from flask import request
+from flask import request, jsonify
+from json_parser import parsejson
 
 signal_interpreter_app = Flask(__name__)
 
 @signal_interpreter_app.route("/")
 def start():
-    return "Hello world!"
+    return "Hello, World!"
 
 @signal_interpreter_app.route("/", methods=["POST"])
-def mirror_data():
+def interpret_signal():
     data = request.get_json()
-    print(data)
-    return data
+    title = parsejson.get_signal_title(data["signal"])
+    return jsonify(title)
