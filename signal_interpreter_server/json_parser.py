@@ -1,22 +1,25 @@
+# -*- coding: utf-8 -*-
+"""
+DESCRIPTION
+
+Created  at 2020-11-12
+Current project: signal-interpreter-server
+
+
+"""
+
 import json
-import os
 
-# can be circumvented by giving full path, but use this instead
-path = os.getcwd().split("\\")
-path = "\\".join(path[:-1]) + "\\"
+class JsonParser:
 
-class ParseJSON:
-    def __init__(self):
-        self.data = {}
+    def load_file(self, jsonFilePath):
+        with open(jsonFilePath) as f:
+            self.json_data = json.load(f)
 
-    def load_file(self, fpath):
-        with open(path + fpath) as f:
-            self.data = json.load(f)
+        self._id_title_pair = {d['id']: d['title'] for d in self.json_data['services']}
 
-    def get_signal_title(self, id):
-        for s in self.data["services"]:
-            if s["id"] == id:
-                return s["title"]
 
-# instantiate class for json parsing
-parsejson = ParseJSON()
+
+    def get_signal_title_from_ID(self, signal_ID: str) -> str:
+        return self._id_title_pair.get(signal_ID)
+

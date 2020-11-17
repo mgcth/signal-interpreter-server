@@ -1,16 +1,14 @@
+from routes import signal_interpreter_app, jp
 import argparse
-from routes import signal_interpreter_app
-from json_parser import parsejson
 
 def main():
-    args = get_args()
-    parsejson.load_file(args["file_path"])
-
-def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file_path", required=True)
-    return parser.parse_args()
+    parser.add_argument('--file_path', help='Specify the path to the signal database file')
+    args = parser.parse_args()
+    jsonPath = args.file_path
+    jp.load_file(jsonPath)
+    signal_interpreter_app.run()
 
 if __name__ == "__main__":
     main()
-    signal_interpreter_app.run()
+
