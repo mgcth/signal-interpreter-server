@@ -22,3 +22,4 @@ class JsonParser:
 
     def get_signal_title_from_ID(self, signal_ID: str) -> str:
         return self._id_title_pair.get(signal_ID)
+
