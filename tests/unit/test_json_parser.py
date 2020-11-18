@@ -27,29 +27,25 @@ testJson = {
 }
 
 
-
 @patch("builtins.open", mock_open(read_data=json.dumps(testJson)))
 def test_load_file():
-    '''
+    """
     * Create a new file called json_parser.py where you have a function called load_file() which will load the signal database into a dictionary
-    '''
+    """
     jp = JsonParser()
     jp.load_file("dummy")
     assert jp.json_data["services"][0]["title"] == 'ECU Reset'
     assert jp._id_title_pair.get('27') == "Security Access"
-    assert jp._id_title_pair.get('888888') == None
-
-
+    assert jp._id_title_pair.get('888888') is None
 
 
 @patch("builtins.open", mock_open(read_data=json.dumps(testJson)))
 def test_get_signal_title_from_ID():
-    '''
+    """
     Create another function in json_parser.py which will take the signal ID as input and return the signal title by parsing the dictionary you have loaded
     :return:
-    '''
+    """
     jp = JsonParser()
     jp.load_file("dummy")
     assert jp.get_signal_title_from_ID('11') == 'ECU Reset'
     assert jp.get_signal_title_from_ID('27') == 'Security Access'
-

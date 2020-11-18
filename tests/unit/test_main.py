@@ -17,7 +17,6 @@ from json_parser import JsonParser
 from routes import signal_interpreter_app
 
 
-
 @patch.object(JsonParser, 'get_signal_title_from_ID', return_value="dummy")
 @patch.object(Flask, "run")
 @patch.object(JsonParser, "load_file")
@@ -39,6 +38,3 @@ def test_main(mock_load_file, mock_run, mock_get_signal_title_from_ID):
             client.post("/", json=payload)  # simulates a POST-message
             mock_run.assert_called_once()
             mock_load_file.assert_called_with("./signal_database.json")
-
-
-
