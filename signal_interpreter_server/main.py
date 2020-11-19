@@ -1,14 +1,30 @@
-from routes import signal_interpreter_app, jp
+"""
+Server program.
+"""
 import argparse
+from signal_interpreter_server.routes import signal_interpreter_app, jp
+
 
 def main():
+    """
+    Program entry function.
+    :return:
+    """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file_path', help='Specify the path to the signal database file')
+    parser.add_argument('-f', '--file_path', help='Specify the path to the signal database file')
     args = parser.parse_args()
-    jsonPath = args.file_path
-    jp.load_file(jsonPath)
+    json_path = args.file_path
+    jp.load_file(json_path)
     signal_interpreter_app.run()
 
-if __name__ == "__main__":
-    main()
 
+def init():
+    """
+    Entry to main. But why not just main()?
+    :return:
+    """
+    if __name__ == "__main__":
+        main()
+
+
+init()

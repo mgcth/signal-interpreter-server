@@ -7,11 +7,10 @@ Current project: signal-interpreter-server
 
 
 """
-
 from unittest.mock import patch, mock_open
 import json
 
-from json_parser import JsonParser
+from signal_interpreter_server.json_parser import JsonParser
 
 testJson = {
     "services": [
@@ -27,7 +26,6 @@ testJson = {
 }
 
 
-
 @patch("builtins.open", mock_open(read_data=json.dumps(testJson)))
 def test_load_file():
     '''
@@ -40,16 +38,14 @@ def test_load_file():
     assert jp._id_title_pair.get('888888') == None
 
 
-
-
 @patch("builtins.open", mock_open(read_data=json.dumps(testJson)))
-def test_get_signal_title_from_ID():
+def test_get_signal_title_from_id():
     '''
     Create another function in json_parser.py which will take the signal ID as input and return the signal title by parsing the dictionary you have loaded
     :return:
     '''
     jp = JsonParser()
     jp.load_file("dummy")
-    assert jp.get_signal_title_from_ID('11') == 'ECU Reset'
-    assert jp.get_signal_title_from_ID('27') == 'Security Access'
+    assert jp.get_signal_title_from_id('11') == 'ECU Reset'
+    assert jp.get_signal_title_from_id('27') == 'Security Access'
 
