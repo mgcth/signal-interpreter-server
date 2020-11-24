@@ -23,7 +23,6 @@ def style(_):
     :param _:
     :return:
     """
-    SRC_DIR = r"./"
     toIgnore = "E501"
     cmd = f"pycodestyle {SRC_DIR} --ignore={toIgnore}"
     subprocess.call(cmd, shell=True)
