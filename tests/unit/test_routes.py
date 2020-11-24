@@ -12,7 +12,7 @@ from json_parser import JsonParser
 from routes import signal_interpreter_app
 
 
-@patch.object(JsonParser, 'get_signal_title_from_ID', return_value="dummy")
+@patch.object(JsonParser, 'get_signal_title_from_id', return_value="dummy")
 def test_interpret_signal(mock_get_signal_title_from_ID):
     """
     Rename the function mirror_data() in routes.py to interpret_signal() instead.

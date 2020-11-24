@@ -47,5 +47,5 @@ def test_get_signal_title_from_ID():
     """
     jp = JsonParser()
     jp.load_file("dummy")
-    assert jp.get_signal_title_from_ID('11') == 'ECU Reset'
-    assert jp.get_signal_title_from_ID('27') == 'Security Access'
+    assert jp.get_signal_title_from_id('11') == 'ECU Reset'
+    assert jp.get_signal_title_from_id('27') == 'Security Access'

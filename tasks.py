@@ -9,8 +9,11 @@ Current project: signal-interpreter-server
 """
 from invoke import task
 import subprocess
+import os
 
-
+CURR_DIR = r"./"
+SRC_DIR = os.path.join(CURR_DIR, "signal_interpreter_server")
+TEST_DIR = os.path.join(CURR_DIR, "tests")
 
 
 @task
@@ -28,6 +31,6 @@ def style(_):
 
 @task
 def lint(_):
-    SRC_DIR = r"*.py"
+    # SRC_DIR = r"*.py"
     cmd = f"pylint {SRC_DIR}"
     subprocess.call(cmd, shell=True)
