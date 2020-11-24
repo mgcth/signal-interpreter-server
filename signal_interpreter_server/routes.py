@@ -1,17 +1,16 @@
 # routes.py
+"""
+Contains routing methods.
+"""
 from flask import Flask, request, jsonify
-from json_parser import JsonParser
+from signal_interpreter_server.json_parser import JsonParser
 
-jp = JsonParser()
 signal_interpreter_app = Flask(__name__)
+json_parser = JsonParser()
 
-# @signal_interpreter_app.route("/")
-# def start():
-#     return "Hello world!"
 
 @signal_interpreter_app.route("/", methods=["POST"])
-def interpret_signal():
+def interpret_signal():  # pylint: disable=missing-function-docstring
     data = request.get_json()
-    return jsonify(jp.get_signal_title_from_ID(data['signal']))    # jsonify serializes data to json format
-
-
+    interpretation = json_parser.get_interpretation(data["signal"])
+    return jsonify(interpretation)

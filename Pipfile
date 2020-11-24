@@ -5,9 +5,15 @@ name = "pypi"
 
 [packages]
 flask = "*"
+requests = "*"
 
 [dev-packages]
+response = "*"
 pytest = "*"
+pycodestyle = "*"
+pytest-cov = "*"
+pylint = "*"
+invoke = "*"
 
 [requires]
 python_version = "3.9"

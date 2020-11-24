@@ -1,2 +1,2 @@
-# signal-interpreter-server
-signal-interpreter-server
+# signal-interpreter-client
+signal-interpreter-client
