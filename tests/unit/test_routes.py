@@ -7,13 +7,18 @@ Current project: signal-interpreter-server
 
 
 """
+import pytest
 from unittest.mock import patch, mock_open
-from json_parser import JsonParser
-from routes import signal_interpreter_app
+from signal_interpreter_server.json_parser import JsonParser
+from signal_interpreter_server.routes import signal_interpreter_app
 
 
-@patch.object(JsonParser, 'get_signal_title_from_ID', return_value="dummy")
-def test_interpret_signal(mock_get_signal_title_from_ID):
+@pytest.mark.parametrize("sig", [
+    "11",
+    "27",
+])
+@patch.object(JsonParser, 'get_signal_title_from_id', return_value="dummy")
+def test_interpret_signal(mock_get_signal_title_from_id, sig):
     '''
     Rename the function mirror_data() in routes.py to interpret_signal() instead.
     The function should receive the payload in the following format {"signal": "ID"} where ID is of type string.
@@ -22,11 +27,11 @@ def test_interpret_signal(mock_get_signal_title_from_ID):
     '''
     signal_interpreter_app.testing = True
     my_app_instance = signal_interpreter_app.test_client()
+    payload = {"signal": sig}
 
     with my_app_instance as client:
-        payload = {"signal": "11"}
         rv = client.post("/", json=payload)  # simulates a POST-message
         json_data = rv.get_json()
         assert json_data == "dummy"
-        mock_get_signal_title_from_ID.assert_called_with("11")
+        mock_get_signal_title_from_id.assert_called_with(sig)
 
