@@ -14,7 +14,7 @@ import os
 CURR_DIR = r"./"
 SRC_DIR = os.path.join(CURR_DIR, "signal_interpreter_server")
 TEST_DIR = os.path.join(CURR_DIR, "tests")
-
+COV_PATH = ".coveragerc"
 
 @task
 def style(_):
@@ -32,4 +32,11 @@ def style(_):
 def lint(_):
     # SRC_DIR = r"*.py"
     cmd = f"pylint {SRC_DIR}"
+    subprocess.call(cmd, shell=True)
+
+
+@task
+def unit_test(_):
+    COV_PATH
+    cmd = f"python -m pytest {TEST_DIR} --cov {SRC_DIR} --cov-config={COV_PATH}"
     subprocess.call(cmd, shell=True)
