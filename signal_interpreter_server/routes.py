@@ -4,7 +4,7 @@ Contains routing methods.
 import logging
 from flask import Flask, request, jsonify, abort
 from signal_interpreter_server.json_parser import JsonParser
-from signal_interpreter_server.exceptions import JsonParserLoadError, JsonParserGetTitleError
+from signal_interpreter_server.exceptions import JsonParserGetTitleError
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def interpret_signal():
         return jsonify(title)
     except KeyError as err:
         logger.exception("Exception occurred in POST: %s", err)
-        abort(404, description="Page not found")
+        abort(400, description="Bad request")
     except JsonParserGetTitleError as err:
         logger.warning("Exception occurred in title retrieval: %s", err)
-        raise JsonParserGetTitleError
+        abort(404, description="Page not found")

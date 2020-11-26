@@ -43,7 +43,11 @@ def test_interpret_signal(mock_get_signal_title_from_id, sig):
     logger.debug("End of %s function test log.", test_interpret_signal.__name__)
 
 
-def test_interpret_signal_exception():
+@pytest.mark.parametrize("sig, res", [
+    (None, 400),
+    ("0", 404),
+])
+def test_interpret_signal_exception(sig, res):
     """
     Testing interpret_signal.
     :return:
@@ -52,25 +56,13 @@ def test_interpret_signal_exception():
 
     signal_interpreter_app.testing = True
     my_app_instance = signal_interpreter_app.test_client()
-    payload = {}
+    # can this be made nicer?
+    if sig == None:
+        payload = {}
+    else:
+        payload = {"signal": sig}
 
     with my_app_instance as client:
         rv = client.post("/", json=payload)
-        assert rv.status_code == 404
-    logger.debug("End of %s function test log.", test_interpret_signal_exception.__name__)
-
-
-def test_interpret_signal_exception2():
-    """
-    Testing interpret_signal.
-    :return:
-    """
-    logger.debug("Start of %s function test log.", test_interpret_signal_exception.__name__)
-    with pytest.raises(JsonParserGetTitleError):
-        signal_interpreter_app.testing = True
-        my_app_instance = signal_interpreter_app.test_client()
-        payload = {"signal": "0"} # wrong signal, throw KeyError
-
-        with my_app_instance as client:
-            rv = client.post("/", json=payload)
+        assert rv.status_code == res
     logger.debug("End of %s function test log.", test_interpret_signal_exception.__name__)
