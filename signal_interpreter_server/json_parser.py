@@ -2,13 +2,17 @@
 """
 DESCRIPTION
 
-Created  at 2020-11-12
+Created at 2020-11-12
 Current project: signal-interpreter-server
 
 
 """
-
+import logging
 import json
+from signal_interpreter_server.exceptions import JsonParserLoadError, JsonParserGetTitleError
+
+
+logger = logging.getLogger(__name__)
 
 
 class JsonParser:
@@ -25,13 +29,23 @@ class JsonParser:
         :param json_file_path:
         :return:
         """
-        with open(json_file_path) as file:
-            self.json_data = json.load(file)
+        try:
+            with open(json_file_path) as file:
+                self.json_data = json.load(file)
+                logger.info("Loaded database file: %s", file)
 
-        self._id_title_pair = {d['id']: d['title'] for d in self.json_data['services']}
+            self._id_title_pair = {d['id']: d['title'] for d in self.json_data['services']}
+            logger.info("Parsed database file.")
+        except FileNotFoundError as err:
+            logger.exception("Exception occurred in file loading: %s", err)
+            raise JsonParserLoadError from err
 
     def get_signal_title_from_id(self, signal_id: str) -> str:
         """
         Get title from signal id.
         """
-        return self._id_title_pair.get(signal_id)
+        try:
+            return self._id_title_pair[signal_id]
+        except KeyError as err:
+            logger.exception("Exception occurred in file loading: %s", err)
+            raise JsonParserGetTitleError from err
