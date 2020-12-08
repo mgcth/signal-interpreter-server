@@ -1,0 +1,24 @@
+version: 1
+
+formatters:
+  simple:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s "
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    stream: ext://sys.stdout
+    formatter: simple
+
+  debug_file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    maxBytes: 10240 # Max file size is 10 MB
+    backupCount: 5 # Number of files to rotate
+    filename: log_file.txt
+    formatter: simple
+
+root:
+  level: NOTSET # the log level is set in the handler instead
+  handlers: [console, debug_file]
