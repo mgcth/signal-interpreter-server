@@ -1,6 +1,7 @@
 version: 1
 
 formatters:
+  #  Both loggers should log in the format timestamp - module name - log level name - log message
   simple:
     format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s "
 
