@@ -9,7 +9,7 @@ Current project: signal-interpreter-server
 """
 import logging
 import json
-from signal_interpreter_server.exceptions import JsonParserLoadError, JsonParserGetTitleError
+from signal_interpreter_server.exceptions import JsonParserLoadError, ParserGetTitleError
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ class JsonParser:
     """
     def __init__(self):
         self._id_title_pair = {}
-        self.json_data = {}
+        self.data = {}
 
     def load_file(self, json_file_path):
         """
@@ -31,13 +31,13 @@ class JsonParser:
         """
         try:
             with open(json_file_path) as file:
-                self.json_data = json.load(file)
-                logger.info("Loaded database file: %s", file)
+                self.data = json.load(file)
+            logger.info("Loaded database file (JSON): %s", json_file_path)
 
-            self._id_title_pair = {d['id']: d['title'] for d in self.json_data['services']}
-            logger.info("Parsed database file.")
+            self._id_title_pair = {d['id']: d['title'] for d in self.data['services']}
+            logger.info("Parsed database file (JSON).")
         except FileNotFoundError as err:
-            logger.exception("Exception occurred in file loading: %s", err)
+            logger.exception("Exception occurred in file loading (JSON): %s", err)
             raise JsonParserLoadError from err
 
     def get_signal_title_from_id(self, signal_id: str) -> str:
@@ -47,5 +47,5 @@ class JsonParser:
         try:
             return self._id_title_pair[signal_id]
         except KeyError as err:
-            logger.exception("Exception occurred in file loading: %s", err)
-            raise JsonParserGetTitleError from err
+            logger.exception("Exception occurred in file loading (JSON): %s", err)
+            raise ParserGetTitleError from err
